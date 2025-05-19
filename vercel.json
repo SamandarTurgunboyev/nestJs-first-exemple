@@ -1,7 +1,7 @@
 {
     "version": 2,
     "functions": {
-        "api/index.ts": {
+        "api/main.ts": {
             "runtime": "nodejs18.x",
             "handler": "dist/main.handler"
         }
