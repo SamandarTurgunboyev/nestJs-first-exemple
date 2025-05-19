@@ -1,8 +1,12 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { BlogDto, CreateBlogDto } from './dto/blog.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Roles } from 'src/roles.decorator';
+import { Role } from 'src/role.enum';
+import { RolesGuard } from 'src/roles/roles.guard';
 
+@UseGuards(RolesGuard)
 @Controller('blog')
 export class BlogController {
     constructor(private readonly blogService: BlogService) { }
@@ -32,7 +36,8 @@ export class BlogController {
         return this.blogService.getAllBlogs()
     }
 
-    @HttpCode(201)
+    @Roles(Role.Admin)
+    @UseGuards(RolesGuard)
     @Post("create")
     @UsePipes(ValidationPipe)
     @ApiOperation({ summary: 'Create blog logged-in user' })

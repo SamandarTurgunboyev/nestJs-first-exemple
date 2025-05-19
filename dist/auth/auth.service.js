@@ -53,6 +53,7 @@ const mongoose_2 = require("mongoose");
 const user_schema_1 = require("../schemas/user.schema");
 const token_service_1 = require("../token/token.service");
 const bcrypt = __importStar(require("bcrypt"));
+const role_enum_1 = require("../role.enum");
 let AuthService = class AuthService {
     userModel;
     tokenService;
@@ -68,8 +69,8 @@ let AuthService = class AuthService {
         if (currentUser) {
             throw new common_1.NotFoundException(`User already exists`);
         }
-        const user = await this.userModel.create({ password: hash, email: dto.email, name: dto.name });
-        const payload = { id: user._id, name: user.name, email: user.email };
+        const user = await this.userModel.create({ password: hash, email: dto.email, name: dto.name, roles: role_enum_1.Role.User });
+        const payload = { id: user._id, name: user.name, email: user.email, role: user.roles };
         const token = this.tokenService.generateToken({ ...payload });
         await this.tokenService.saveToken(String(payload.id), (await token).refreshToken);
         return {
@@ -86,7 +87,7 @@ let AuthService = class AuthService {
         if (!isPassword) {
             throw new common_2.BadRequestException("Password is incorrect");
         }
-        const userDto = { id: user._id, name: user.name, email: user.email };
+        const userDto = { id: user._id, name: user.name, email: user.email, role: user.roles };
         const tokens = this.tokenService.generateToken({ ...userDto });
         await this.tokenService.saveToken(String(userDto.id), (await tokens).refreshToken);
         return { user: userDto, tokens };

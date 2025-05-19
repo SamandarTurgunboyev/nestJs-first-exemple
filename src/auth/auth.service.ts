@@ -6,6 +6,7 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import { TokenService } from 'src/token/token.service';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from './dto/dto';
+import { Role } from 'src/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -23,9 +24,9 @@ export class AuthService {
         if (currentUser) {
             throw new NotFoundException(`User already exists`);
         }
-        const user = await this.userModel.create({ password: hash, email: dto.email, name: dto.name })
+        const user = await this.userModel.create({ password: hash, email: dto.email, name: dto.name, roles: Role.User })
 
-        const payload = { id: user._id, name: user.name, email: user.email }
+        const payload = { id: user._id, name: user.name, email: user.email, role: user.roles }
         const token = this.tokenService.generateToken({ ...payload })
         await this.tokenService.saveToken(String(payload.id), (await token).refreshToken)
         return {
@@ -43,7 +44,7 @@ export class AuthService {
         if (!isPassword) {
             throw new BadRequestException("Password is incorrect")
         }
-        const userDto = { id: user._id, name: user.name, email: user.email }
+        const userDto = { id: user._id, name: user.name, email: user.email, role: user.roles }
         const tokens = this.tokenService.generateToken({ ...userDto })
         await this.tokenService.saveToken(String(userDto.id), (await tokens).refreshToken)
 

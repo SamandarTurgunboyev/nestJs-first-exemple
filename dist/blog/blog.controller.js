@@ -17,6 +17,9 @@ const common_1 = require("@nestjs/common");
 const blog_service_1 = require("./blog.service");
 const blog_dto_1 = require("./dto/blog.dto");
 const swagger_1 = require("@nestjs/swagger");
+const roles_decorator_1 = require("../roles.decorator");
+const role_enum_1 = require("../role.enum");
+const roles_guard_1 = require("../roles/roles.guard");
 let BlogController = class BlogController {
     blogService;
     constructor(blogService) {
@@ -66,7 +69,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "getAllBlogs", null);
 __decorate([
-    (0, common_1.HttpCode)(201),
+    (0, roles_decorator_1.Roles)(role_enum_1.Role.Admin),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, common_1.Post)("create"),
     (0, common_1.UsePipes)(common_1.ValidationPipe),
     (0, swagger_1.ApiOperation)({ summary: 'Create blog logged-in user' }),
@@ -156,6 +160,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogController.prototype, "deleteBlog", null);
 exports.BlogController = BlogController = __decorate([
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, common_1.Controller)('blog'),
     __metadata("design:paramtypes", [blog_service_1.BlogService])
 ], BlogController);

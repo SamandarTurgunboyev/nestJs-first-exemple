@@ -21,13 +21,7 @@ async function bootstrap() {
         .addCookieAuth('refreshToken')
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
-    swagger_1.SwaggerModule.setup('api', app, document);
-    app.use((req, res, next) => {
-        if (req.path === '/') {
-            return res.redirect('/api');
-        }
-        next();
-    });
+    swagger_1.SwaggerModule.setup('/', app, document);
     await app.listen(process.env.PORT || 4000);
 }
 bootstrap();

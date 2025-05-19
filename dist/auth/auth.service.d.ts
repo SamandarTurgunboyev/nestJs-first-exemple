@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { TokenService } from 'src/token/token.service';
 import { UserDto } from './dto/dto';
+import { Role } from 'src/role.enum';
 export declare class AuthService {
     private userModel;
     private tokenService;
@@ -28,6 +29,7 @@ export declare class AuthService {
             id: import("mongoose").Types.ObjectId;
             name: string;
             email: string;
+            role: Role;
         };
         tokens: Promise<{
             accessToken: string;

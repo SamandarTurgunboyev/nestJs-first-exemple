@@ -22,7 +22,9 @@ let ChatGateway = class ChatGateway {
         console.log(`Client disconnected: ${client.id}`);
     }
     handleMessage(client, payload) {
-        console.log(`Message from ${client.id}: ${payload}`);
+        console.log(`Message from ${client.id}: ${payload} on`);
+        this.server.emit("message", `Message from ${client.id}: ${payload} emit`);
+        return `Message from ${client.id}: ${payload} on`;
     }
 };
 exports.ChatGateway = ChatGateway;
@@ -37,6 +39,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ChatGateway.prototype, "handleMessage", null);
 exports.ChatGateway = ChatGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)(8081, { cors: { origin: "*" } })
+    (0, websockets_1.WebSocketGateway)(4001, { cors: { origin: "*" } })
 ], ChatGateway);
 //# sourceMappingURL=chat.gateway.js.map

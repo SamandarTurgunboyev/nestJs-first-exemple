@@ -25,6 +25,7 @@ export declare class AuthController {
             id: import("mongoose").Types.ObjectId;
             name: string;
             email: string;
+            role: import("../role.enum").Role;
         };
     }>;
     getMe(req: any): Promise<any>;
