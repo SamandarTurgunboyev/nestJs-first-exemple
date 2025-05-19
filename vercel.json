@@ -1,15 +1,15 @@
 {
     "version": 2,
-    "functions": {
-        "src/main.ts": {
-            "runtime": "nodejs18.x",
-            "handler": "dist/main.handler"
+    "builds": [
+        {
+            "src": "dist/main.js",
+            "use": "@vercel/node"
         }
-    },
+    ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/src/main.ts"
+            "dest": "dist/main.js"
         }
     ]
 }
